@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-"""Adam optimizer implementation."""
+"""Adam+ optimizer implementation."""
 # pylint: disable=g-classes-have-attributes
 from __future__ import absolute_import
 from __future__ import division
@@ -30,42 +30,29 @@ from tensorflow.python.training import training_ops
 from tensorflow.python.util.tf_export import keras_export
 
 
-@keras_export('keras.optimizers.Adam')
+@keras_export('keras.optimizers.AdamP')
 class Adam(optimizer_v2.OptimizerV2):
   r"""Optimizer that implements the Adam algorithm.
-  Adam optimization is a stochastic gradient descent method that is based on
-  adaptive estimation of first-order and second-order moments.
-  According to
-  [Kingma et al., 2014](http://arxiv.org/abs/1412.6980),
-  the method is "*computationally
-  efficient, has little memory requirement, invariant to diagonal rescaling of
+  AdamPlus optimization is a stochastic gradient descent method that is based on
+  adaptive estimation of first-order and second-order moments introduced by Adam
+  {Paper: Adam: A method for stochastic optimization} and its updated variant AdamW 
+  {Ppaee: Fixing weight decay regularization in Adam}.
+  The proposed method of AdamPlus is computationally efficient and rescaling of
   gradients, and is well suited for problems that are large in terms of
-  data/parameters*".
+  data/parameters.
   Args:
-    learning_rate: A `Tensor`, floating point value, or a schedule that is a
-      `tf.keras.optimizers.schedules.LearningRateSchedule`, or a callable
-      that takes no arguments and returns the actual value to use, The
-      learning rate. Defaults to 0.001.
-    beta_1: A float value or a constant float tensor, or a callable
-      that takes no arguments and returns the actual value to use. The
-      exponential decay rate for the 1st moment estimates. Defaults to 0.9.
-    beta_2: A float value or a constant float tensor, or a callable
-      that takes no arguments and returns the actual value to use, The
-      exponential decay rate for the 2nd moment estimates. Defaults to 0.999.
-    epsilon: A small constant for numerical stability. This epsilon is
-      "epsilon hat" in the Kingma and Ba paper (in the formula just before
-      Section 2.1), not the epsilon in Algorithm 1 of the paper. Defaults to
-      1e-7.
-    amsgrad: Boolean. Whether to apply AMSGrad variant of this algorithm from
-      the paper "On the Convergence of Adam and beyond". Defaults to `False`.
-    name: Optional name for the operations created when applying gradients.
-      Defaults to `"Adam"`.
+    learning_rate:  Defaults to 0.001.
+    beta_1:  Defaults to 0.9.
+    beta_2:  Defaults to 0.999.
+    epsilon: Defaults to 1e-7.
+    amsgrad: Boolean. Defaults to `False`.
+    name: Defaults to `"AdamP"`.
     **kwargs: Keyword arguments. Allowed to be one of
       `"clipnorm"` or `"clipvalue"`.
       `"clipnorm"` (float) clips gradients by norm; `"clipvalue"` (float) clips
       gradients by value.
   Usage:
-  >>> opt = tf.keras.optimizers.Adam(learning_rate=0.1)
+  >>> opt = tf.keras.optimizers.AdamP(learning_rate=0.1)
   >>> var1 = tf.Variable(10.0)
   >>> loss = lambda: (var1 ** 2)/2.0       # d(loss)/d(var1) == var1
   >>> step_count = opt.minimize(loss, [var1]).numpy()
